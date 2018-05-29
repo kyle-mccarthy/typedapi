@@ -1,5 +1,5 @@
 import AppConfig from '@src/lib/AppConfig';
-import { ConnectionToken, LoggerService, ServerToken, AppConfigService, CacheService } from '@src/types';
+import { ConnectionToken, LoggerService, ServerToken, AppConfigService, CacheService, Env } from '@src/types';
 import { mkdirSync, statSync } from 'fs';
 import Koa from 'koa';
 import { join } from 'path';
@@ -12,26 +12,16 @@ import WinstonLogger from '@src/lib/logger/WinstonLogger';
 import RedisCache from '@src/lib/cache/RedisCache';
 
 export const bootstrap = async (): Promise<Koa> => {
-  const appConfig = new AppConfig();
-  Container.set(AppConfigService, appConfig);
+  const appConfig = await register();
 
   mkdirIfNotExists(appConfig.runtimeDir());
   mkdirIfNotExists(join(appConfig.runtimeDir(), './logs'));
 
-  const connection = await initDatabase();
-  Container.set(ConnectionToken, connection);
-
-  routingUseContainer(Container);
-  ormUseContainer(Container);
-
-  const app = bootstrapServer();
-  Container.set(ServerToken, app);
-
   const logger = new WinstonLogger();
   Container.set(LoggerService, logger);
 
-  const cache = new RedisCache();
-  Container.set(CacheService, cache);
+  const app = bootstrapServer();
+  Container.set(ServerToken, app);
 
   app.listen(appConfig.port(), () => {
     logger.info(`> Ready on http://localhost:${appConfig.port()}`);
@@ -40,9 +30,38 @@ export const bootstrap = async (): Promise<Koa> => {
   return app;
 };
 
+export const register = async () => {
+  const appConfig = new AppConfig();
+  Container.set(AppConfigService, appConfig);
+
+  const IS_PROD = process.env.NODE_ENV === 'production';
+  const IS_TEST = process.env.NODE_ENV === 'test';
+  const IS_DEV = !IS_PROD && !IS_TEST;
+
+  Container.set(Env.IS_DEV, IS_DEV);
+  Container.set(Env.IS_PROD, IS_PROD);
+  Container.set(Env.IS_TEST, IS_TEST);
+
+  mkdirIfNotExists(appConfig.runtimeDir());
+  mkdirIfNotExists(join(appConfig.runtimeDir(), './logs'));
+
+  const connection = await initDatabase(IS_TEST);
+  Container.set(ConnectionToken, connection);
+
+  routingUseContainer(Container);
+  ormUseContainer(Container);
+
+  const cache = new RedisCache();
+  Container.set(CacheService, cache);
+
+  return appConfig;
+};
+
 export const initDatabase = async (useTestDb: boolean = false): Promise<Connection> => {
   const appConfig = Container.get(AppConfigService);
   const { host, port, database } = appConfig.getDbConfig();
+
+  console.log(useTestDb);
 
   if (useTestDb) {
     return createConnection({

@@ -12,11 +12,12 @@
   },
   "scripts": {
     "dev": "nodemon --watch 'src/**/*' -e ts --exec 'ts-node -r tsconfig-paths/register' ./src/index.ts",
-    "test": "NODE_ENV=test mocha --globals routingControllersMetadataArgsStorage,SQL --exit --check-leaks --no-timeouts --async-only --require reflect-metadata --require source-map-support/register --require ts-node/register './**/*.spec.ts'",
+    "test": "NODE_ENV=test mocha --globals routingControllersMetadataArgsStorage,SQL --exit --check-leaks --no-timeouts --async-only --require reflect-metadata --require source-map-support/register --require ts-node/register --require tsconfig-paths/register './**/*.spec.ts'",
     "coverage": "nyc yarn run test",
     "security": "nsp check"
   },
   "dependencies": {
+    "bcrypt": "^2.0.1",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
@@ -29,6 +30,7 @@
     "winston": "https://github.com/winstonjs/winston"
   },
   "devDependencies": {
+    "@types/bcrypt": "^2.0.0",
     "@types/chai": "^4.1.3",
     "@types/koa": "^2.0.45",
     "@types/koa-bodyparser": "^4.2.0",
@@ -37,6 +39,7 @@
     "@types/redis": "^2.8.6",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
+    "sql.js": "^0.5.0",
     "ts-node": "^6.0.5",
     "tsconfig-paths": "^3.3.2",
     "tslint": "^5.10.0"

@@ -3,6 +3,12 @@ import { Connection } from 'typeorm';
 import Koa from 'koa';
 import AppConfig from '@src/lib/AppConfig';
 
+export enum Env {
+  IS_DEV = 'IS_DEV',
+  IS_TEST = 'IS_TEST',
+  IS_PROD = 'IS_PROD',
+}
+
 export const CacheService = new Token<Cache>();
 export interface Cache {
   get(key: string): Promise<any>;
