@@ -7,12 +7,14 @@ import { BASE_DIR } from '@src/index';
 
 @Service(AppConfigService)
 export default class AppConfig {
-  private dbConfig!: DbConfig;
-  private serverConfig!: ServerConfig;
-  private redisConfig!: RedisConfig;
+  private dbConfig: DbConfig;
+  private serverConfig: ServerConfig;
+  private redisConfig: RedisConfig;
 
   constructor() {
-    this.loadConfigFiles();
+    this.dbConfig = DbSettings.sql;
+    this.redisConfig = DbSettings.redis;
+    this.serverConfig = ServerSettings;
   }
 
   baseDir(): string {
@@ -46,10 +48,4 @@ export default class AppConfig {
     return this.redisConfig;
   }
 
-  private loadConfigFiles() {
-    this.dbConfig = DbSettings.sql;
-    this.redisConfig = DbSettings.redis;
-
-    this.serverConfig = ServerSettings;
-  }
 }

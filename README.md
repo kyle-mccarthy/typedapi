@@ -4,6 +4,10 @@
 
 Contains the scaffolding for a backend web service using Node.js with Typescript.
 
+- `yarn dev` run the app in development mode with file watching and reload
+- `yarn build` transpile typescript for production
+- `yarn start` run the built file
+
 ## ORM
 - [Typeorm](https://github.com/typeorm/typeorm) 
 
@@ -16,5 +20,7 @@ Contains the scaffolding for a backend web service using Node.js with Typescript
 - ORM
 
 ## Roadmap
+- Better dependency injection management
 - User Auth
 - JWT
+- Image manipulation and management
