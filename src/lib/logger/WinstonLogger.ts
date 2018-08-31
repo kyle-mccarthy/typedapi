@@ -17,8 +17,8 @@ export default class WinstonLogger implements Logger {
       level: 'debug',
       format: format.combine(format.timestamp(), format.json()),
       transports: [
-        new transports.File({ filename: join(this.config.runtimeDir(), 'error.log'), level: 'error ' }),
-        new transports.File({ filename: join(this.config.runtimeDir(), 'app.log') }),
+        new transports.File({ filename: join(this.config.runtimeDir(), './logs/error.log'), level: 'error ' }),
+        new transports.File({ filename: join(this.config.runtimeDir(), './logs/app.log') }),
       ],
     });
 

@@ -20,9 +20,12 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "noEmitHelpers": true,
-    "target": "es2017",
+    "target": "esnext",
     "module": "commonjs",
     "moduleResolution": "node",
+    "lib": [
+      "esnext"
+    ],
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -30,8 +33,8 @@
     "noUnusedLocals": true,
     "strict": true,
     "pretty": true,
-    "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*",

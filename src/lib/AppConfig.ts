@@ -1,7 +1,9 @@
 import { DbConfig, ServerConfig, AppConfigService, RedisConfig } from '@src/types';
-import { readFileSync } from 'fs';
 import { join } from 'path';
 import { Service } from 'typedi';
+import DbSettings from '@src/config/db.json';
+import ServerSettings from '@src/config/server.json';
+import { BASE_DIR } from '@src/index';
 
 @Service(AppConfigService)
 export default class AppConfig {
@@ -14,7 +16,7 @@ export default class AppConfig {
   }
 
   baseDir(): string {
-    return join(__dirname, './../../');
+    return BASE_DIR;
   }
 
   appDir(): string {
@@ -45,11 +47,9 @@ export default class AppConfig {
   }
 
   private loadConfigFiles() {
-    const db = JSON.parse(readFileSync(join(this.appDir(), './config/db.json')).toString());
-    this.dbConfig = db.sql;
-    this.redisConfig = db.redis;
+    this.dbConfig = DbSettings.sql;
+    this.redisConfig = DbSettings.redis;
 
-    const server = JSON.parse(readFileSync(join(this.appDir(), './config/server.json')).toString());
-    this.serverConfig = server;
+    this.serverConfig = ServerSettings;
   }
 }

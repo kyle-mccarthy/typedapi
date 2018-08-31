@@ -61,8 +61,6 @@ export const initDatabase = async (useTestDb: boolean = false): Promise<Connecti
   const appConfig = Container.get(AppConfigService);
   const { host, port, database } = appConfig.getDbConfig();
 
-  console.log(useTestDb);
-
   if (useTestDb) {
     return createConnection({
       entities,
