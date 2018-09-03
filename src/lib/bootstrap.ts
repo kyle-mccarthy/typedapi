@@ -8,8 +8,8 @@ import { Container } from 'typedi';
 import { Connection, createConnection, useContainer as ormUseContainer } from 'typeorm';
 import entities from '@src/entities';
 import koaBodyparser from 'koa-bodyparser';
-import WinstonLogger from '@src/lib/logger/WinstonLogger';
-import RedisCache from '@src/lib/cache/RedisCache';
+import WinstonLogger from '@src/services/logger/WinstonLogger';
+import RedisCache from '@src/services/cache/RedisCache';
 
 export const bootstrap = async (): Promise<Koa> => {
   const appConfig = await register();
