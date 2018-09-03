@@ -1,4 +1,4 @@
-import { bootstrap } from '@src/lib/bootstrap';
+import { default as bootstrap } from '@src/lib/bootstrap';
 // tslint:disable-next-line
 import 'reflect-metadata';
 import { join } from 'path';

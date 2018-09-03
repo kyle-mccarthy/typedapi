@@ -1,9 +1,12 @@
-import { DbConfig, ServerConfig, AppConfigService, RedisConfig } from '@src/types';
+import { DbConfig, ServerConfig, RedisConfig } from '@src/types';
 import { join } from 'path';
 import { Service } from 'typedi';
 import DbSettings from '@src/config/db.json';
 import ServerSettings from '@src/config/server.json';
 import { BASE_DIR } from '@src/index';
+import { Token } from 'typedi';
+
+export const AppConfigService = new Token<AppConfig>();
 
 @Service(AppConfigService)
 export default class AppConfig {
@@ -22,11 +25,11 @@ export default class AppConfig {
   }
 
   appDir(): string {
-    return join(this.baseDir(), './src');
+    return join(this.baseDir());
   }
 
-  runtimeDir(): string {
-    return join(this.baseDir(), './runtime');
+  runtimeDir(path?: string): string {
+    return join(this.baseDir(), './runtime', path ? path : '');
   }
 
   port(): number {

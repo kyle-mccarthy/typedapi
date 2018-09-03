@@ -9,7 +9,7 @@
         "./tests/*"
       ]
     },
-    "outDir": "dist/", // target for compiled files
+    "outDir": "dist", // target for compiled files
     "allowSyntheticDefaultImports": true, // no errors with commonjs modules interop
     "esModuleInterop": true,
     "allowJs": true, // include js files

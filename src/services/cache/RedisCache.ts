@@ -1,12 +1,12 @@
 import AppConfig from '@src/lib/AppConfig';
-import { Cache } from '@src/types';
+import { ICacheService } from '@src/services/cache/ICacheService';
 import { RedisClient, createClient } from 'redis';
 import { Container, Service } from 'typedi';
 import { promisify } from 'util';
 import { AppConfigService, CacheService } from '@src/types';
 
 @Service(CacheService)
-export default class RedisCache implements Cache {
+export default class RedisCache implements ICacheService {
   private config: AppConfig;
   private client: RedisClient;
   private _get: (key: string) => Promise<string>;

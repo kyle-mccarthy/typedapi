@@ -1,12 +1,13 @@
 import AppConfig from '@src/lib/AppConfig';
-import prettyPrint from '@src/lib/logger/formats/prettyPrint';
-import { Logger, LoggerService, AppConfigService } from '@src/types';
+import prettyPrint from '@src/services/logger/formats/prettyPrint';
+import { AppConfigService } from '@src/types';
+import { ILoggerService, LoggerService } from '@src/services/logger/ILoggerService';
 import { join } from 'path';
 import { Container, Service } from 'typedi';
 import { Logger as UseLogger, createLogger, format, transports } from 'winston';
 
 @Service(LoggerService)
-export default class WinstonLogger implements Logger {
+export default class WinstonLogger implements ILoggerService {
   private config: AppConfig;
   private logger: UseLogger;
 

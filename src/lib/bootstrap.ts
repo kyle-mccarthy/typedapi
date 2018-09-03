@@ -1,3 +1,6 @@
+// tslint:disable-next-line
+require('source-map-support').install();
+
 import AppConfig from '@src/lib/AppConfig';
 import { ConnectionToken, LoggerService, ServerToken, AppConfigService, CacheService, Env } from '@src/types';
 import { mkdirSync, statSync } from 'fs';
@@ -14,11 +17,7 @@ import RedisCache from '@src/services/cache/RedisCache';
 export const bootstrap = async (): Promise<Koa> => {
   const appConfig = await register();
 
-  mkdirIfNotExists(appConfig.runtimeDir());
-  mkdirIfNotExists(join(appConfig.runtimeDir(), './logs'));
-
-  const logger = new WinstonLogger();
-  Container.set(LoggerService, logger);
+  const logger = Container.get(LoggerService);
 
   const app = bootstrapServer();
   Container.set(ServerToken, app);
@@ -54,6 +53,9 @@ export const register = async () => {
   const cache = new RedisCache();
   Container.set(CacheService, cache);
 
+  const logger = new WinstonLogger();
+  Container.set(LoggerService, logger);
+
   return appConfig;
 };
 
@@ -88,7 +90,7 @@ export const bootstrapServer = (): Koa => {
 
   useKoaServer(app, {
     routePrefix: '/api',
-    controllers: [join(config.appDir(), '/controllers/**/*.ts')],
+    controllers: [join(config.appDir(), '/controllers/**/*')],
     defaults: {
       nullResultCode: 404,
       undefinedResultCode: 204,
@@ -98,7 +100,7 @@ export const bootstrapServer = (): Koa => {
   return app;
 };
 
-const mkdirIfNotExists = (dir: string) => {
+export const mkdirIfNotExists = (dir: string) => {
   try {
     statSync(dir);
   } catch (e) {
